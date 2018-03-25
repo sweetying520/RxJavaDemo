@@ -7,10 +7,14 @@ package com.dream.rxjavademo.http;
 public class BaseResponse<T> {
     private int code;
     private String msg;
-    private T data;
+    private T model;
 
     public T getData() {
-        return data;
+        return model;
+    }
+
+    public void setData(T model) {
+        this.model = model;
     }
 
     public void setCode(int code) {

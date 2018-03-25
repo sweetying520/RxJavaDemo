@@ -47,8 +47,8 @@ public class RetrofitServiceManager {
         mRetrofit = new Retrofit.Builder()
                 .client(builder.build())
                 .baseUrl(ApiService.BASR_URL)
-                .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
