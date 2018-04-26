@@ -15,6 +15,9 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -33,14 +36,55 @@ public class RetrofitServiceManager {
     private Retrofit mRetrofit;
 
 
-    private RetrofitServiceManager(){
+    private RetrofitServiceManager() {
+
+        /**
+         * 设置证书的三种方式
+         */
+        /**
+         * 设置可访问所有的https网站
+         */
+//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+//                其他配置
+//                .build();
+
+        /**
+         *  设置具体的证书
+         */
+
+//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(证书的inputstream, null, null);
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager))
+//        //其他配置
+//         .build();
+
+        /**双向认证
+         *
+          */
+//        HttpsUtils.getSslSocketFactory(
+//                证书的inputstream,
+//                本地证书的inputstream,
+//                本地证书的密码)
+
+
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);
-        builder.writeTimeout(DEFAULT_WRITE_TIME_OUT,TimeUnit.SECONDS);
+        builder.writeTimeout(DEFAULT_WRITE_TIME_OUT, TimeUnit.SECONDS);
+        //设置支持所有https请求
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        }).sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
 
 
-        builder.cookieJar(new PersistentCookieJar(new SetCookieCache(),new SharedPrefsCookiePersistor(App.getInstance())));
+        builder.cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance())));
 
         addInterceptor(builder);
 
@@ -56,6 +100,7 @@ public class RetrofitServiceManager {
 
     /**
      * 添加各种拦截器
+     *
      * @param builder
      */
     private void addInterceptor(OkHttpClient.Builder builder) {
@@ -70,19 +115,19 @@ public class RetrofitServiceManager {
         builder.addInterceptor(new CommonParamsInterceptor());
         builder.addInterceptor(httpCacheInterceptor);
         builder.addNetworkInterceptor(httpCacheInterceptor);
-        builder.cache(new Cache(new File(Environment.getExternalStorageDirectory() + "/RxJavaDemo"),1024*1024*10));
+        builder.cache(new Cache(new File(Environment.getExternalStorageDirectory() + "/RxJavaDemo"), 1024 * 1024 * 10));
 
     }
 
-    private static class SingletonHolder{
+    private static class SingletonHolder {
         private static RetrofitServiceManager retrofitServiceManager = new RetrofitServiceManager();
     }
 
-    public static RetrofitServiceManager getInstance(){
+    public static RetrofitServiceManager getInstance() {
         return SingletonHolder.retrofitServiceManager;
     }
 
-    public <T> T creat(Class<T> tClass){
+    public <T> T creat(Class<T> tClass) {
         return mRetrofit.create(tClass);
     }
 

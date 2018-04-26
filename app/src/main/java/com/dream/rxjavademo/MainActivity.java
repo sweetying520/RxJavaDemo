@@ -12,7 +12,6 @@ import com.dream.rxjavademo.http.RetrofitServiceManager;
 import com.dream.rxjavademo.http.RxSubcriber;
 import com.dream.rxjavademo.http.RxjavaHelper;
 
-import org.json.JSONArray;
 
 import java.util.List;
 
