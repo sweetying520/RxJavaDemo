@@ -8,33 +8,17 @@
     tools:context="com.dream.rxjavademo.MainActivity">
 
     <Button
-        android:id="@+id/btn_login"
-        android:text="登录"
+        android:onClick="getData"
+        android:text="获取数据"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_get_shop_cart"
-        android:text="后去购物车"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-    android:id="@+id/btn_log_out"
-    android:text="登出"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_status"
-        android:text="登录状态"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/btn_recommend"
-        android:text="获取推荐的产品"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

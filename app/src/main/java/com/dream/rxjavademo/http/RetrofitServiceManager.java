@@ -2,7 +2,7 @@ package com.dream.rxjavademo.http;
 
 import android.os.Environment;
 
-import com.dream.rxjavademo.ApiService;
+import com.dream.rxjavademo.common.ApiService;
 import com.dream.rxjavademo.App;
 import com.dream.rxjavademo.http.interceptor.CommonParamsInterceptor;
 import com.dream.rxjavademo.http.interceptor.HttpCacheInterceptor;
@@ -27,7 +27,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class RetrofitServiceManager {
-    private static final int DEFAULT_TIME_OUT = 10;//超时时间5s
+    private static final int DEFAULT_TIME_OUT = 10;//超时时间
     private static final int DEFAULT_READ_TIME_OUT = 10;//读取时间
     private static final int DEFAULT_WRITE_TIME_OUT = 10;//读取时间
     private Retrofit mRetrofit;
@@ -38,7 +38,8 @@ public class RetrofitServiceManager {
         builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);
         builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);
         builder.writeTimeout(DEFAULT_WRITE_TIME_OUT,TimeUnit.SECONDS);
-        builder.cache(new Cache(new File(Environment.getExternalStorageDirectory() + "/RxJavaDemo"),1024*1024*10));
+
+
         builder.cookieJar(new PersistentCookieJar(new SetCookieCache(),new SharedPrefsCookiePersistor(App.getInstance())));
 
         addInterceptor(builder);
@@ -63,10 +64,14 @@ public class RetrofitServiceManager {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         HttpHeaderInterceptor httpHeaderInterceptor = new HttpHeaderInterceptor.Builder().build();
+        HttpCacheInterceptor httpCacheInterceptor = new HttpCacheInterceptor();
         builder.addInterceptor(loggingInterceptor);
         builder.addInterceptor(httpHeaderInterceptor);
-        builder.addInterceptor(new HttpCacheInterceptor());
         builder.addInterceptor(new CommonParamsInterceptor());
+        builder.addInterceptor(httpCacheInterceptor);
+        builder.addNetworkInterceptor(httpCacheInterceptor);
+        builder.cache(new Cache(new File(Environment.getExternalStorageDirectory() + "/RxJavaDemo"),1024*1024*10));
+
     }
 
     private static class SingletonHolder{

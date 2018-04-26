@@ -1,4 +1,4 @@
-package com.dream.rxjavademo;
+package com.dream.rxjavademo.http;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.dream.rxjavademo.BaseActivity;
 import com.dream.rxjavademo.http.ApiException;
 import com.dream.rxjavademo.http.BaseResponse;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
