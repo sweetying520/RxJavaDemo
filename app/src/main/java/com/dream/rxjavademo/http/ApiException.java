@@ -1,16 +1,21 @@
 package com.dream.rxjavademo.http;
 
 /**
- * Created by Administrator on 2018/3/25.
+ *
+ * @author Administrator
+ * @date 2018/3/25
  */
 
 public class ApiException extends RuntimeException{
     private int code;
     private String msg;
-    public ApiException(int code,String msg){
+    ApiException(int code, String msg){
         this.code = code;
         this.msg = msg;
     }
+
+    public ApiException(){}
+
 
     public int getCode() {
         return code;

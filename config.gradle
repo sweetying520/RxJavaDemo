@@ -1,0 +1,46 @@
+ext {
+    android = [
+            compileSdkVersion       : 27,
+            minSdkVersion           : 19,
+            targetSdkVersion        : 27,
+            versionCode             : 1,
+            versionName             : "1.0"
+    ]
+
+    version = [
+            supportLibraryVersion      : "27.1.1",
+            constraint_layout_version  : "1.0.2",
+            retrofitVersion            : "2.3.0",
+            okhttpVersion              : "3.9.0"
+    ]
+
+
+    dependencies = [
+            //system
+            "junit"              : "junit:junit:4.12",
+            "runner"             : "com.android.support.test:runner:1.0.1",
+            "espresso-core"      : "com.android.support.test.espresso:espresso-core:3.0.1",
+
+            //base
+            "appcompat-v7"       : "com.android.support:appcompat-v7:${version["supportLibraryVersion"]}",
+            "constraint-layout"  : "com.android.support.constraint:constraint-layout:${version["constraint_layout_version"]}",
+
+
+            //rx
+            "rxjava"        : "io.reactivex.rxjava2:rxjava:2.1.5",
+            "rxandroid"     : "io.reactivex.rxjava2:rxandroid:2.0.1",
+
+            //retrofit
+            "retrofit"                      : "com.squareup.retrofit2:retrofit:${version["retrofitVersion"]}",
+            "adapter-rxjava2"               : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitVersion"]}",
+            "converter-gson"                : "com.squareup.retrofit2:converter-gson:${version["retrofitVersion"]}",
+            "converter-scalars"             : "com.squareup.retrofit2:converter-scalars:${version["retrofitVersion"]}",
+            "okhttp"                        : "com.squareup.okhttp3:okhttp:${version["okhttpVersion"]}",
+            "logging-interceptor"           : "com.squareup.okhttp3:logging-interceptor:${version["okhttpVersion"]}",
+
+            //Cookie持久化
+            "PersistentCookieJar"           : "com.github.franmontiel:PersistentCookieJar:v1.0.1"
+
+    ]
+
+}

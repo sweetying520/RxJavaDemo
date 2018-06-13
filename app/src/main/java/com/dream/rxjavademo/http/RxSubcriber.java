@@ -1,26 +1,26 @@
 package com.dream.rxjavademo.http;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
+
 
 import com.dream.rxjavademo.BaseActivity;
-import com.dream.rxjavademo.http.ApiException;
-import com.dream.rxjavademo.http.BaseResponse;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
 
 import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import retrofit2.HttpException;
 
 /**
+ * 此方法实现之后无返回值
  * Created by Administrator on 2018/3/25.
  */
 
+@Deprecated
 public  abstract class RxSubcriber<T> implements Observer<BaseResponse<T>> {
 
     private ProgressDialog mProgressDialog;
@@ -49,7 +49,6 @@ public  abstract class RxSubcriber<T> implements Observer<BaseResponse<T>> {
         onSuccess(value.getData());
     }
 
-
     @Override
     public void onError(Throwable e) {
         if (e instanceof IOException) {
@@ -72,13 +71,10 @@ public  abstract class RxSubcriber<T> implements Observer<BaseResponse<T>> {
         new AlertDialog.Builder(context)
                 .setTitle("提示")
                 .setMessage(errorMsg)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        if(!disposable.isDisposed()){
-                            disposable.dispose();
-                        }
+                .setPositiveButton("确定", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    if(!disposable.isDisposed()){
+                        disposable.dispose();
                     }
                 }).show();
     }
@@ -86,7 +82,6 @@ public  abstract class RxSubcriber<T> implements Observer<BaseResponse<T>> {
     @Override
     public void onComplete() {
         dismissLoading();
-        Log.d("print", "-->执行了完成的方法");
     }
 
     public abstract void onSuccess(T t);

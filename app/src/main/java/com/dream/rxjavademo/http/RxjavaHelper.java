@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Administrator on 2018/3/25.
  */
 
+@Deprecated
 public class RxjavaHelper {
 
     /**
@@ -17,15 +18,9 @@ public class RxjavaHelper {
      * @return Observable转换器
      */
     public static <T> ObservableTransformer<T, T> observeOnMainThread() {
-        return new ObservableTransformer<T, T>() {
-
-            @Override
-            public ObservableSource<T> apply(Observable<T> upstream) {
-                return upstream.subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-            }
-        };
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 

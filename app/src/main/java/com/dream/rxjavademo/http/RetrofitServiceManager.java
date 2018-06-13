@@ -10,7 +10,7 @@ import com.dream.rxjavademo.http.interceptor.HttpHeaderInterceptor;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -22,8 +22,10 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
 
 /**
  * Created by Administrator on 2018/3/24.
@@ -76,13 +78,7 @@ public class RetrofitServiceManager {
         builder.writeTimeout(DEFAULT_WRITE_TIME_OUT, TimeUnit.SECONDS);
         //设置支持所有https请求
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
-        builder.hostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        }).sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
-
+        builder.hostnameVerifier((hostname, session) -> true).sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
 
         builder.cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance())));
 
