@@ -2,21 +2,19 @@ package com.dream.rxjavademo.http;
 
 import android.os.Environment;
 
-import com.dream.rxjavademo.common.ApiService;
 import com.dream.rxjavademo.App;
+import com.dream.rxjavademo.common.ApiService;
 import com.dream.rxjavademo.http.interceptor.CommonParamsInterceptor;
 import com.dream.rxjavademo.http.interceptor.HttpCacheInterceptor;
 import com.dream.rxjavademo.http.interceptor.HttpHeaderInterceptor;
+import com.dream.rxjavademo.http.interceptor.RetrofitDownloadInterceptor;
+import com.dream.rxjavademo.http.listener.RetrofitDownloadListener;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
-
 import java.io.File;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -28,15 +26,17 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
 /**
- * Created by Administrator on 2018/3/24.
+ * @author Administrator
+ * @date 2018/3/24
  */
 
 public class RetrofitServiceManager {
     private static final int DEFAULT_TIME_OUT = 10;//超时时间
     private static final int DEFAULT_READ_TIME_OUT = 10;//读取时间
     private static final int DEFAULT_WRITE_TIME_OUT = 10;//读取时间
+    private static RetrofitServiceManager mRetrofitServiceManager;
     private Retrofit mRetrofit;
-
+    private RetrofitDownloadListener retrofitDownloadListener;
 
     private RetrofitServiceManager() {
 
@@ -64,12 +64,11 @@ public class RetrofitServiceManager {
 
         /**双向认证
          *
-          */
+         */
 //        HttpsUtils.getSslSocketFactory(
 //                证书的inputstream,
 //                本地证书的inputstream,
 //                本地证书的密码)
-
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -94,6 +93,7 @@ public class RetrofitServiceManager {
                 .build();
     }
 
+
     /**
      * 添加各种拦截器
      *
@@ -104,9 +104,15 @@ public class RetrofitServiceManager {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        RetrofitDownloadInterceptor retrofitDownloadInterceptor = new RetrofitDownloadInterceptor(retrofitDownloadListener);
+
         HttpHeaderInterceptor httpHeaderInterceptor = new HttpHeaderInterceptor.Builder().build();
         HttpCacheInterceptor httpCacheInterceptor = new HttpCacheInterceptor();
+        if (retrofitDownloadListener != null) {
+            builder.addInterceptor(retrofitDownloadInterceptor);
+        }
         builder.addInterceptor(loggingInterceptor);
+
         builder.addInterceptor(httpHeaderInterceptor);
         builder.addInterceptor(new CommonParamsInterceptor());
         builder.addInterceptor(httpCacheInterceptor);
@@ -115,16 +121,17 @@ public class RetrofitServiceManager {
 
     }
 
-    private static class SingletonHolder {
-        private static RetrofitServiceManager retrofitServiceManager = new RetrofitServiceManager();
-    }
-
     public static RetrofitServiceManager getInstance() {
         return SingletonHolder.retrofitServiceManager;
+
     }
 
     public <T> T creat(Class<T> tClass) {
         return mRetrofit.create(tClass);
+    }
+
+    private static class SingletonHolder {
+        private static RetrofitServiceManager retrofitServiceManager = new RetrofitServiceManager();
     }
 
 }

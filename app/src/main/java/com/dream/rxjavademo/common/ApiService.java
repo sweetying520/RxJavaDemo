@@ -7,8 +7,11 @@ import com.dream.rxjavademo.http.BaseResponse;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * Created by Administrator on 2018/3/23.
@@ -26,5 +29,9 @@ public interface ApiService {
     Observable<BaseResponse<List<BannerEntity>>> getBanner();
 
 
+
+    @Streaming
+    @GET
+    Observable<ResponseBody> downLoad(@Url String url);
 
 }

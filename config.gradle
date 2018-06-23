@@ -39,7 +39,10 @@ ext {
             "logging-interceptor"           : "com.squareup.okhttp3:logging-interceptor:${version["okhttpVersion"]}",
 
             //Cookie持久化
-            "PersistentCookieJar"           : "com.github.franmontiel:PersistentCookieJar:v1.0.1"
+            "PersistentCookieJar"           : "com.github.franmontiel:PersistentCookieJar:v1.0.1",
+
+            //numberprogressbar
+            "library"                       : "com.daimajia.numberprogressbar:library:1.4@aar"
 
     ]
 

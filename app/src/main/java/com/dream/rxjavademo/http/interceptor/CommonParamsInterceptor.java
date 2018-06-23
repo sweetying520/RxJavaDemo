@@ -16,7 +16,8 @@ import okhttp3.Response;
 /**
  * 网络请求公共参数插入器
  * <p>
- * Created by XiaoFeng on 2017/1/25.
+ *
+ * @author Administrator
  */
 public class CommonParamsInterceptor implements Interceptor {
     @Override

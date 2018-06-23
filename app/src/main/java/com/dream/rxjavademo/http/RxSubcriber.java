@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.dream.rxjavademo.BaseActivity;
 
 
+import org.reactivestreams.Subscriber;
+
 import java.io.IOException;
 
 import io.reactivex.Observer;
@@ -17,11 +19,13 @@ import retrofit2.HttpException;
 
 /**
  * 此方法实现之后无返回值
- * Created by Administrator on 2018/3/25.
+ *
+ * @author Administrator
+ * @date 2018/3/25
  */
 
 @Deprecated
-public  abstract class RxSubcriber<T> implements Observer<BaseResponse<T>> {
+public  abstract class RxSubcriber<T> implements  Observer<BaseResponse<T>> {
 
     private ProgressDialog mProgressDialog;
     private Disposable disposable;
